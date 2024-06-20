@@ -12,7 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-//why these thing under override it wont work
+  // text controller
+  final _controller = TextEditingController();
   List verygoodlist = [
     ["Test 1 ", false],
     ["Test 2", false],
@@ -24,11 +25,23 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void savenewtask() {
+    setState(() {
+      verygoodlist.add([_controller.text, false]);
+      _controller.clear();
+    });
+    Navigator.of(context).pop();
+  }
+
   void createnewtiles() {
     showDialog(
         context: context,
         builder: (context) {
-          return const DialogBox();
+          return DialogBox(
+            controller: _controller,
+            onsave: savenewtask,
+            oncancel: () => Navigator.of(context).pop(),
+          );
         });
   }
 
