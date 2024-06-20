@@ -1,3 +1,3 @@
 # todo_list
 
-A new Flutter project.
+# followed with tutorial :https://www.youtube.com/watch?v=HQ_ytw58tC4&t=5420s&ab_channel=MitchKoko
