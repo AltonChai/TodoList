@@ -45,6 +45,13 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+// delete task
+  void deleteTask(int index) {
+    setState(() {
+      verygoodlist.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +80,8 @@ class _HomePageState extends State<HomePage> {
           return Todotiles(
             taskname: verygoodlist[index][0],
             taskcomplete: verygoodlist[index][1],
-            onChanged: (value) =>
-                checkthebox(value, index), //what is the => mean
+            onChanged: (value) => checkthebox(value, index),
+            deletetiles: (context) => deleteTask(index),
           );
         },
       ),
