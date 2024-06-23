@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/utils/Data/database.dart';
 import 'package:todo_list/utils/dialog_box.dart';
-
 import 'package:todo_list/utils/todotile.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,22 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //reference the hive box
+  final _myBox = Hive.box('mybox');
+  ToDoDataBase db = ToDoDataBase();
   // text controller
   final _controller = TextEditingController();
-  List verygoodlist = [
-    ["Test 1 ", false],
-    ["Test 2", false],
-  ];
+
   // check the box got tap or not
   void checkthebox(bool? value, int index) {
     setState(() {
-      verygoodlist[index][1] = !verygoodlist[index][1];
+      db.verygoodlist[index][1] = !db.verygoodlist[index][1];
     });
   }
 
   void savenewtask() {
     setState(() {
-      verygoodlist.add([_controller.text, false]);
+      db.verygoodlist.add([_controller.text, false]);
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 // delete task
   void deleteTask(int index) {
     setState(() {
-      verygoodlist.removeAt(index);
+      db.verygoodlist.removeAt(index);
     });
   }
 
@@ -75,11 +75,11 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: verygoodlist.length,
+        itemCount: db.verygoodlist.length,
         itemBuilder: (context, index) {
           return Todotiles(
-            taskname: verygoodlist[index][0],
-            taskcomplete: verygoodlist[index][1],
+            taskname: db.verygoodlist[index][0],
+            taskcomplete: db.verygoodlist[index][1],
             onChanged: (value) => checkthebox(value, index),
             deletetiles: (context) => deleteTask(index),
           );
