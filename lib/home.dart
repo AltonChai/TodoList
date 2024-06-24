@@ -15,6 +15,18 @@ class _HomePageState extends State<HomePage> {
   //reference the hive box
   final _myBox = Hive.box('mybox');
   ToDoDataBase db = ToDoDataBase();
+  @override
+  void initState() {
+    super.initState();
+    // if first time launching , create default data
+    if (_myBox.get("TODOLIST") == null) {
+      db.creatinitdata();
+    } else {
+      //already have data in the list
+      db.loadData();
+    }
+  }
+
   // text controller
   final _controller = TextEditingController();
 
@@ -23,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.verygoodlist[index][1] = !db.verygoodlist[index][1];
     });
+    db.updatedb();
   }
 
   void savenewtask() {
@@ -31,6 +44,7 @@ class _HomePageState extends State<HomePage> {
       _controller.clear();
     });
     Navigator.of(context).pop();
+    db.updatedb();
   }
 
   void createnewtiles() {
@@ -43,6 +57,7 @@ class _HomePageState extends State<HomePage> {
             oncancel: () => Navigator.of(context).pop(),
           );
         });
+    db.updatedb();
   }
 
 // delete task
@@ -50,6 +65,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.verygoodlist.removeAt(index);
     });
+    db.updatedb();
   }
 
   @override
